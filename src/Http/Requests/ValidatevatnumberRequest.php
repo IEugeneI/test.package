@@ -24,7 +24,10 @@ class ChangeProjectStatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' => 'required'
+            'VAT' => 'required|string|regex:/^[a-zA-Z]{2}/',
+            'companyName' => 'string',
+            'address' => 'string',
+            'includeRawResponse' => 'string',
         ];
     }
 }
