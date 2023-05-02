@@ -1,0 +1,22 @@
+{
+    "name": "eugene/validate_vat_number_eu",
+    "description": "Validate EU vat number",
+    "autoload": {
+        "psr-4": {
+            "Eugene\\ValidateVatNumberEu\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Eugene"
+        }
+    ],
+    "require": {
+        "php": "^7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "orchestra/testbench": "^6.27",
+        "symfony/http-foundation": "^4.4|^5.0"
+    }
+}
