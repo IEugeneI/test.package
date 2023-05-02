@@ -26,7 +26,7 @@ class VATvalidatorHelper
           echo 'Error:' . curl_error($ch);
       }
       curl_close ($ch);
-      echo $result;
+      return $result;
 //      $validator = Validator::make([
 //          'VAT'=>$vatNumber,
 //          'companyName'=>$validateCompany,
