@@ -10,6 +10,27 @@ class VATvalidatorHelper
       $ISO=substr($vatNumber, 0, 2);
       $vat=substr($vatNumber,2);
       $url='https://ec.europa.eu/taxation_customs/vies/rest-api/ms/'.$ISO.'/vat/'.$vat;
+      $check=self::check($url);
+      return $check;
+//      $validator = Validator::make([
+//          'VAT'=>$vatNumber,
+//          'companyName'=>$validateCompany,
+//          'address'=>$validateAddress,
+//          'includeRawResponse'=>$includeRawResponse
+//      ], [
+//          'VAT' => 'required|string',
+//          'companyName' => 'string',
+//          'address' => 'string',
+//          'includeRawResponse' => 'string',
+//      ]);
+//      if ($validator->fails()){
+//
+//      }
+        //$vatNumber,$validateCompany=false,$validateAddress=false,$includeRawResponse=false
+  }
+
+  private static function check($url)
+  {
       $ch = curl_init();
 
       curl_setopt($ch, CURLOPT_URL, $url);
@@ -27,20 +48,5 @@ class VATvalidatorHelper
       }
       curl_close ($ch);
       return $result;
-//      $validator = Validator::make([
-//          'VAT'=>$vatNumber,
-//          'companyName'=>$validateCompany,
-//          'address'=>$validateAddress,
-//          'includeRawResponse'=>$includeRawResponse
-//      ], [
-//          'VAT' => 'required|string',
-//          'companyName' => 'string',
-//          'address' => 'string',
-//          'includeRawResponse' => 'string',
-//      ]);
-//      if ($validator->fails()){
-//
-//      }
-        //$vatNumber,$validateCompany=false,$validateAddress=false,$includeRawResponse=false
   }
 }
