@@ -34,19 +34,18 @@ class VATvalidatorHelper
             return self::response(false, false, "Can't connect to service", false);
         }
         $check = json_decode($check);
-        dd($check->isValid);
-        if ($check->isValid == true) {
+        if ($check->isValid) {
             if ($validateCompany) {
                 if ($check->name != $validateCompany) {
                     return self::response(false, $ISO, "Wrong company name", $check, $includeRawResponse);
                 }
-                if ($validateAddress) {
-                    if ($check->address != $validateAddress) {
-                        return self::response(false, $ISO, "Wrong address", $check, $includeRawResponse);
-                    }
-                }
-                return self::response(true, $ISO, false, $check, $includeRawResponse);
             }
+            if ($validateAddress) {
+                if ($check->address != $validateAddress) {
+                    return self::response(false, $ISO, "Wrong address", $check, $includeRawResponse);
+                }
+            }
+            return self::response(true, $ISO, false, $check, $includeRawResponse);
         }
         return self::response(false, false, $check->userError, $check, $includeRawResponse);
     }
