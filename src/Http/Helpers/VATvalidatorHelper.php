@@ -3,50 +3,98 @@
 namespace Eugene\ValidateVatNumberEu\Http\Helpers;
 
 use Illuminate\Support\Facades\Validator;
+
 class VATvalidatorHelper
 {
-  public static function validate($vatNumber,$validateCompany=false,$validateAddress=false,$includeRawResponse=false)
-  {
-      $ISO=substr($vatNumber, 0, 2);
-      $vat=substr($vatNumber,2);
-      $url='https://ec.europa.eu/taxation_customs/vies/rest-api/ms/'.$ISO.'/vat/'.$vat;
-      $check=self::check($url);
-      return $check;
-//      $validator = Validator::make([
-//          'VAT'=>$vatNumber,
-//          'companyName'=>$validateCompany,
-//          'address'=>$validateAddress,
-//          'includeRawResponse'=>$includeRawResponse
-//      ], [
-//          'VAT' => 'required|string',
-//          'companyName' => 'string',
-//          'address' => 'string',
-//          'includeRawResponse' => 'string',
-//      ]);
-//      if ($validator->fails()){
-//
-//      }
-        //$vatNumber,$validateCompany=false,$validateAddress=false,$includeRawResponse=false
-  }
+    const VAT_URL = 'https://ec.europa.eu/taxation_customs/vies/rest-api/ms/';
 
-  private static function check($url)
-  {
-      $ch = curl_init();
+    /**
+     * @param $vatNumber
+     * @param $validateCompany
+     * @param $validateAddress
+     * @param $includeRawResponse
+     * @return array
+     */
+    public static function validate($vatNumber, $validateCompany = false, $validateAddress = false,
+                                    $includeRawResponse = false): array
+    {
+        if (strlen($vatNumber) < 7) {
+            return [
+                'valid' => false,
+                'country' => false,
+                'error' => 'Wrong VAT number',
+                'rawResponse' => false,
+            ];
+        }
+        $ISO = substr($vatNumber, 0, 2);
+        $vat = substr($vatNumber, 2);
+        $url = self::VAT_URL . $ISO . '/vat/' . $vat;
+        $check = self::check($url);
+        if ($check == 'Error') {
+            return self::response(false, false, "Can't connect to service", false);
+        }
+        $check = json_decode($check);
+        if ($check->isValid == true) {
+            if ($validateCompany) {
+                if ($check->name != $validateCompany) {
+                    return self::response(false, $ISO, "Wrong company name", $check, $includeRawResponse);
+                }
+                if ($validateAddress) {
+                    if ($check->address != $validateAddress) {
+                        return self::response(false, $ISO, "Wrong address", $check, $includeRawResponse);
+                    }
+                }
+                return self::response(true, $ISO, false, $check, $includeRawResponse);
+            }
+        }
+        return self::response(false, false, $check->userError, $check, $includeRawResponse);
+    }
 
-      curl_setopt($ch, CURLOPT_URL, $url);
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+    /**
+     * @param $url
+     * @return bool|string
+     */
+    private static function check($url)
+    {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
 
 
-      $headers = array();
-      $headers[] = "Accept: application/json";
-      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $headers = array();
+        $headers[] = "Accept: application/json";
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-      $result = curl_exec($ch);
-      if (curl_errno($ch)) {
-          echo 'Error:' . curl_error($ch);
-      }
-      curl_close ($ch);
-      return $result;
-  }
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            return 'Error';
+        }
+        curl_close($ch);
+        return $result;
+    }
+
+    /**
+     * @param $valid
+     * @param $country
+     * @param $error
+     * @param $rawResponse
+     * @param $includeRawResponse
+     * @return array
+     */
+    protected static function response($valid, $country, $error, $rawResponse, $includeRawResponse = false): array
+    {
+        $response = [
+            'valid' => $valid,
+            'country' => $country,
+            'error' => $error,
+        ];
+        if ($includeRawResponse) {
+            $response['rawResponse'] = $rawResponse;
+        } else {
+            $response['rawResponse'] = false;
+        }
+        return $response;
+    }
 }
