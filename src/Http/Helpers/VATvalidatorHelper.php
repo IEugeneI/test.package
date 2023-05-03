@@ -36,7 +36,8 @@ class VATvalidatorHelper
                 }
             }
             if ($validateAddress) {
-                if ($check->address != $validateAddress) {
+                $address=str_replace("\n","",$check->address);
+                if ($address != $validateAddress) {
                     return self::response(false, $ISO, "Wrong address", $check, $includeRawResponse);
                 }
             }
