@@ -34,6 +34,7 @@ class VATvalidatorHelper
             return self::response(false, false, "Can't connect to service", false);
         }
         $check = json_decode($check);
+        dd($check->isValid);
         if ($check->isValid == true) {
             if ($validateCompany) {
                 if ($check->name != $validateCompany) {
