@@ -19,12 +19,7 @@ class VATvalidatorHelper
                                     $includeRawResponse = false): array
     {
         if (strlen($vatNumber) < 7) {
-            return [
-                'valid' => false,
-                'country' => false,
-                'error' => 'Wrong VAT number',
-                'rawResponse' => false,
-            ];
+            return self::response(false, false, 'Wrong VAT number', false);
         }
         $ISO = substr($vatNumber, 0, 2);
         $vat = substr($vatNumber, 2);

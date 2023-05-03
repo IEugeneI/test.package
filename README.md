@@ -19,3 +19,7 @@
     
     And then use helper function:
     VATvalidatorHelper::validate(VATnumber,Validate_company,Validate_address,Include_raw_response)
+    VATnumber=>required
+    Validate_company=>company address or false(default false)
+    Validate_address=> address or false(default false)
+    Include_raw_response=>true or false (default false)
