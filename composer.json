@@ -1,23 +1,25 @@
 {
-    "name": "eugene/validate_vat_number_eu",
-    "description": "Validate EU vat number",
+    "name": "abss/validate_vat_number_eu",
+    "description": "VAT number validator",
+    "type": "library",
     "autoload": {
         "psr-4": {
-            "Eugene\\ValidateVatNumberEu\\": "src/"
+            "Abss\\validate_vat_number_eu\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "Eugene"
+            "name": "eugene",
+            "email": "boichenko@abss.at"
         }
     ],
-    "require": {
-        "php": "^7.4"
-    },
     "require-dev": {
         "phpunit/phpunit": "^9.6",
         "orchestra/testbench": "^6.27",
         "symfony/http-foundation": "^4.4|^5.0",
         "illuminate/support": "^9.0"
+    },
+    "require": {
+        "php": "^7.4"
     }
 }
