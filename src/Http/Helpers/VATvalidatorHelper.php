@@ -1,8 +1,6 @@
 <?php
 
-namespace Eugene\ValidateVatNumberEu\Http\Helpers;
-
-use Illuminate\Support\Facades\Validator;
+namespace Abss\validate_vat_number_eu\Http\Helpers;
 
 class VATvalidatorHelper
 {
