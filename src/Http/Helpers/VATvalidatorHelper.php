@@ -1,6 +1,6 @@
 <?php
 
-namespace Abss\validate_vat_number_eu\Http\Helpers;
+namespace Abss\Validate_vat_number_eu\Http\Helpers;
 
 class VATvalidatorHelper
 {
