@@ -4,7 +4,7 @@
     "type": "library",
     "autoload": {
         "psr-4": {
-            "Abss\\validate_vat_number_eu\\": "src/"
+            "Abss\\Validate_vat_number_eu\\": "src/"
         }
     },
     "authors": [
